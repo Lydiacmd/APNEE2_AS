@@ -1,0 +1,635 @@
+Grammar
+
+    0 $accept: Source $end
+
+    1 Source: List
+
+    2 List: ε
+    3     | List Assign SEMICOLON
+
+    4 Assign: VAR ASSIGN Assign
+    5       | Expr
+
+    6 Expr: Expr PLUS Expr
+    7     | Expr MINUS Expr
+    8     | Expr MULT Expr
+    9     | Expr DIV Expr
+   10     | Expr MODULO Expr
+   11     | Expr EXPON Expr
+   12     | Expr LBRACK Expr RBRACK
+   13     | LB Assign RB
+   14     | MINUS Expr
+   15     | ENTIER
+   16     | VAR
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    ENTIER <nval> (258) 15
+    VAR <sval> (259) 4 16
+    PLUS (260) 6
+    MINUS (261) 7 14
+    MULT (262) 8
+    DIV (263) 9
+    MODULO (264) 10
+    EXPON (265) 11
+    UMINUS (266)
+    ASSIGN (267) 4
+    SEMICOLON (268) 3
+    LB (269) 13
+    RB (270) 13
+    RBRACK (271) 12
+    LBRACK (272) 12
+
+
+Nonterminals, with rules where they appear
+
+    $accept (18)
+        on left: 0
+    Source <nval> (19)
+        on left: 1
+        on right: 0
+    List <nval> (20)
+        on left: 2 3
+        on right: 1 3
+    Assign <nval> (21)
+        on left: 4 5
+        on right: 3 4 13
+    Expr <nval> (22)
+        on left: 6 7 8 9 10 11 12 13 14 15 16
+        on right: 5 6 7 8 9 10 11 12 14
+
+
+State 0
+
+    0 $accept: • Source $end
+    1 Source: • List
+    2 List: ε •
+    3     | • List Assign SEMICOLON
+
+    $default  reduce using rule 2 (List)
+
+    Source  go to state 1
+    List    go to state 2
+
+
+State 1
+
+    0 $accept: Source • $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 Source: List •  [$end]
+    3 List: List • Assign SEMICOLON
+    4 Assign: • VAR ASSIGN Assign
+    5       | • Expr
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 5
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    $default  reduce using rule 1 (Source)
+
+    Assign  go to state 8
+    Expr    go to state 9
+
+
+State 3
+
+    0 $accept: Source $end •
+
+    $default  accept
+
+
+State 4
+
+   15 Expr: ENTIER •
+
+    $default  reduce using rule 15 (Expr)
+
+
+State 5
+
+    4 Assign: VAR • ASSIGN Assign
+   16 Expr: VAR •  [PLUS, MINUS, MULT, DIV, MODULO, EXPON, SEMICOLON, RB, LBRACK]
+
+    ASSIGN  shift, and go to state 10
+
+    $default  reduce using rule 16 (Expr)
+
+
+State 6
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   14     | MINUS • Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 12
+
+
+State 7
+
+    4 Assign: • VAR ASSIGN Assign
+    5       | • Expr
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   13     | LB • Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 5
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Assign  go to state 13
+    Expr    go to state 9
+
+
+State 8
+
+    3 List: List Assign • SEMICOLON
+
+    SEMICOLON  shift, and go to state 14
+
+
+State 9
+
+    5 Assign: Expr •  [SEMICOLON, RB]
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    PLUS    shift, and go to state 15
+    MINUS   shift, and go to state 16
+    MULT    shift, and go to state 17
+    DIV     shift, and go to state 18
+    MODULO  shift, and go to state 19
+    EXPON   shift, and go to state 20
+    LBRACK  shift, and go to state 21
+
+    $default  reduce using rule 5 (Assign)
+
+
+State 10
+
+    4 Assign: • VAR ASSIGN Assign
+    4       | VAR ASSIGN • Assign
+    5       | • Expr
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 5
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Assign  go to state 22
+    Expr    go to state 9
+
+
+State 11
+
+   16 Expr: VAR •
+
+    $default  reduce using rule 16 (Expr)
+
+
+State 12
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+   14     | MINUS Expr •  [PLUS, MINUS, MULT, DIV, MODULO, EXPON, SEMICOLON, RB, RBRACK, LBRACK]
+
+    $default  reduce using rule 14 (Expr)
+
+    Conflict between rule 14 and token PLUS resolved as reduce (PLUS < UMINUS).
+    Conflict between rule 14 and token MINUS resolved as reduce (MINUS < UMINUS).
+    Conflict between rule 14 and token MULT resolved as reduce (MULT < UMINUS).
+    Conflict between rule 14 and token DIV resolved as reduce (DIV < UMINUS).
+    Conflict between rule 14 and token MODULO resolved as reduce (MODULO < UMINUS).
+    Conflict between rule 14 and token EXPON resolved as reduce (EXPON < UMINUS).
+    Conflict between rule 14 and token LBRACK resolved as reduce (LBRACK < UMINUS).
+
+
+State 13
+
+   13 Expr: LB Assign • RB
+
+    RB  shift, and go to state 23
+
+
+State 14
+
+    3 List: List Assign SEMICOLON •
+
+    $default  reduce using rule 3 (List)
+
+
+State 15
+
+    6 Expr: • Expr PLUS Expr
+    6     | Expr PLUS • Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 24
+
+
+State 16
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    7     | Expr MINUS • Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 25
+
+
+State 17
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    8     | Expr MULT • Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 26
+
+
+State 18
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+    9     | Expr DIV • Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 27
+
+
+State 19
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   10     | Expr MODULO • Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 28
+
+
+State 20
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   11     | Expr EXPON • Expr
+   12     | • Expr LBRACK Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 29
+
+
+State 21
+
+    6 Expr: • Expr PLUS Expr
+    7     | • Expr MINUS Expr
+    8     | • Expr MULT Expr
+    9     | • Expr DIV Expr
+   10     | • Expr MODULO Expr
+   11     | • Expr EXPON Expr
+   12     | • Expr LBRACK Expr RBRACK
+   12     | Expr LBRACK • Expr RBRACK
+   13     | • LB Assign RB
+   14     | • MINUS Expr
+   15     | • ENTIER
+   16     | • VAR
+
+    ENTIER  shift, and go to state 4
+    VAR     shift, and go to state 11
+    MINUS   shift, and go to state 6
+    LB      shift, and go to state 7
+
+    Expr  go to state 30
+
+
+State 22
+
+    4 Assign: VAR ASSIGN Assign •
+
+    $default  reduce using rule 4 (Assign)
+
+
+State 23
+
+   13 Expr: LB Assign RB •
+
+    $default  reduce using rule 13 (Expr)
+
+
+State 24
+
+    6 Expr: Expr • PLUS Expr
+    6     | Expr PLUS Expr •  [PLUS, MINUS, SEMICOLON, RB, RBRACK, LBRACK]
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    MULT    shift, and go to state 17
+    DIV     shift, and go to state 18
+    MODULO  shift, and go to state 19
+    EXPON   shift, and go to state 20
+
+    $default  reduce using rule 6 (Expr)
+
+    Conflict between rule 6 and token PLUS resolved as reduce (%left PLUS).
+    Conflict between rule 6 and token MINUS resolved as reduce (%left MINUS).
+    Conflict between rule 6 and token MULT resolved as shift (PLUS < MULT).
+    Conflict between rule 6 and token DIV resolved as shift (PLUS < DIV).
+    Conflict between rule 6 and token MODULO resolved as shift (PLUS < MODULO).
+    Conflict between rule 6 and token EXPON resolved as shift (PLUS < EXPON).
+    Conflict between rule 6 and token LBRACK resolved as reduce (LBRACK < PLUS).
+
+
+State 25
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    7     | Expr MINUS Expr •  [PLUS, MINUS, SEMICOLON, RB, RBRACK, LBRACK]
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    MULT    shift, and go to state 17
+    DIV     shift, and go to state 18
+    MODULO  shift, and go to state 19
+    EXPON   shift, and go to state 20
+
+    $default  reduce using rule 7 (Expr)
+
+    Conflict between rule 7 and token PLUS resolved as reduce (%left PLUS).
+    Conflict between rule 7 and token MINUS resolved as reduce (%left MINUS).
+    Conflict between rule 7 and token MULT resolved as shift (MINUS < MULT).
+    Conflict between rule 7 and token DIV resolved as shift (MINUS < DIV).
+    Conflict between rule 7 and token MODULO resolved as shift (MINUS < MODULO).
+    Conflict between rule 7 and token EXPON resolved as shift (MINUS < EXPON).
+    Conflict between rule 7 and token LBRACK resolved as reduce (LBRACK < MINUS).
+
+
+State 26
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    8     | Expr MULT Expr •  [PLUS, MINUS, MULT, DIV, MODULO, SEMICOLON, RB, RBRACK, LBRACK]
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    EXPON  shift, and go to state 20
+
+    $default  reduce using rule 8 (Expr)
+
+    Conflict between rule 8 and token PLUS resolved as reduce (PLUS < MULT).
+    Conflict between rule 8 and token MINUS resolved as reduce (MINUS < MULT).
+    Conflict between rule 8 and token MULT resolved as reduce (%left MULT).
+    Conflict between rule 8 and token DIV resolved as reduce (%left DIV).
+    Conflict between rule 8 and token MODULO resolved as reduce (%left MODULO).
+    Conflict between rule 8 and token EXPON resolved as shift (MULT < EXPON).
+    Conflict between rule 8 and token LBRACK resolved as reduce (LBRACK < MULT).
+
+
+State 27
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+    9     | Expr DIV Expr •  [PLUS, MINUS, MULT, DIV, MODULO, SEMICOLON, RB, RBRACK, LBRACK]
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    EXPON  shift, and go to state 20
+
+    $default  reduce using rule 9 (Expr)
+
+    Conflict between rule 9 and token PLUS resolved as reduce (PLUS < DIV).
+    Conflict between rule 9 and token MINUS resolved as reduce (MINUS < DIV).
+    Conflict between rule 9 and token MULT resolved as reduce (%left MULT).
+    Conflict between rule 9 and token DIV resolved as reduce (%left DIV).
+    Conflict between rule 9 and token MODULO resolved as reduce (%left MODULO).
+    Conflict between rule 9 and token EXPON resolved as shift (DIV < EXPON).
+    Conflict between rule 9 and token LBRACK resolved as reduce (LBRACK < DIV).
+
+
+State 28
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   10     | Expr MODULO Expr •  [PLUS, MINUS, MULT, DIV, MODULO, SEMICOLON, RB, RBRACK, LBRACK]
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+
+    EXPON  shift, and go to state 20
+
+    $default  reduce using rule 10 (Expr)
+
+    Conflict between rule 10 and token PLUS resolved as reduce (PLUS < MODULO).
+    Conflict between rule 10 and token MINUS resolved as reduce (MINUS < MODULO).
+    Conflict between rule 10 and token MULT resolved as reduce (%left MULT).
+    Conflict between rule 10 and token DIV resolved as reduce (%left DIV).
+    Conflict between rule 10 and token MODULO resolved as reduce (%left MODULO).
+    Conflict between rule 10 and token EXPON resolved as shift (MODULO < EXPON).
+    Conflict between rule 10 and token LBRACK resolved as reduce (LBRACK < MODULO).
+
+
+State 29
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   11     | Expr EXPON Expr •  [PLUS, MINUS, MULT, DIV, MODULO, SEMICOLON, RB, RBRACK, LBRACK]
+   12     | Expr • LBRACK Expr RBRACK
+
+    EXPON  shift, and go to state 20
+
+    $default  reduce using rule 11 (Expr)
+
+    Conflict between rule 11 and token PLUS resolved as reduce (PLUS < EXPON).
+    Conflict between rule 11 and token MINUS resolved as reduce (MINUS < EXPON).
+    Conflict between rule 11 and token MULT resolved as reduce (MULT < EXPON).
+    Conflict between rule 11 and token DIV resolved as reduce (DIV < EXPON).
+    Conflict between rule 11 and token MODULO resolved as reduce (MODULO < EXPON).
+    Conflict between rule 11 and token EXPON resolved as shift (%right EXPON).
+    Conflict between rule 11 and token LBRACK resolved as reduce (LBRACK < EXPON).
+
+
+State 30
+
+    6 Expr: Expr • PLUS Expr
+    7     | Expr • MINUS Expr
+    8     | Expr • MULT Expr
+    9     | Expr • DIV Expr
+   10     | Expr • MODULO Expr
+   11     | Expr • EXPON Expr
+   12     | Expr • LBRACK Expr RBRACK
+   12     | Expr LBRACK Expr • RBRACK
+
+    PLUS    shift, and go to state 15
+    MINUS   shift, and go to state 16
+    MULT    shift, and go to state 17
+    DIV     shift, and go to state 18
+    MODULO  shift, and go to state 19
+    EXPON   shift, and go to state 20
+    RBRACK  shift, and go to state 31
+    LBRACK  shift, and go to state 21
+
+
+State 31
+
+   12 Expr: Expr LBRACK Expr RBRACK •
+
+    $default  reduce using rule 12 (Expr)

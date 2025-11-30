@@ -1,0 +1,508 @@
+Grammar
+
+    0 $accept: S $end
+
+    1 S: L
+
+    2 L: ε
+    3  | A SEMICOLON L
+
+    4 A: VAR ASSIGN A
+    5  | M
+
+    6 M: T
+    7  | M PLUS T
+    8  | M MINUS T
+    9  | M LBRACK M RBRACK
+
+   10 T: P
+   11  | T MULT P
+   12  | T DIV P
+
+   13 P: F
+   14  | F EXPON P
+
+   15 F: ENTIER
+   16  | VAR
+   17  | LB A RB
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    ENTIER <nval> (258) 15
+    VAR <sval> (259) 4 16
+    PLUS (260) 7
+    MINUS (261) 8
+    MULT (262) 11
+    DIV (263) 12
+    EXPON (264) 14
+    ASSIGN (265) 4
+    SEMICOLON (266) 3
+    LB (267) 17
+    RB (268) 17
+    LBRACK (269) 9
+    RBRACK (270) 9
+
+
+Nonterminals, with rules where they appear
+
+    $accept (16)
+        on left: 0
+    S <nval> (17)
+        on left: 1
+        on right: 0
+    L <nval> (18)
+        on left: 2 3
+        on right: 1 3
+    A <nval> (19)
+        on left: 4 5
+        on right: 3 4 17
+    M <nval> (20)
+        on left: 6 7 8 9
+        on right: 5 7 8 9
+    T <nval> (21)
+        on left: 10 11 12
+        on right: 6 7 8 11 12
+    P <nval> (22)
+        on left: 13 14
+        on right: 10 11 12 14
+    F <nval> (23)
+        on left: 15 16 17
+        on right: 13 14
+
+
+State 0
+
+    0 $accept: • S $end
+    1 S: • L
+    2 L: ε •  [$end]
+    3  | • A SEMICOLON L
+    4 A: • VAR ASSIGN A
+    5  | • M
+    6 M: • T
+    7  | • M PLUS T
+    8  | • M MINUS T
+    9  | • M LBRACK M RBRACK
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 2
+    LB      shift, and go to state 3
+
+    $default  reduce using rule 2 (L)
+
+    S  go to state 4
+    L  go to state 5
+    A  go to state 6
+    M  go to state 7
+    T  go to state 8
+    P  go to state 9
+    F  go to state 10
+
+
+State 1
+
+   15 F: ENTIER •
+
+    $default  reduce using rule 15 (F)
+
+
+State 2
+
+    4 A: VAR • ASSIGN A
+   16 F: VAR •  [PLUS, MINUS, MULT, DIV, EXPON, SEMICOLON, RB, LBRACK]
+
+    ASSIGN  shift, and go to state 11
+
+    $default  reduce using rule 16 (F)
+
+
+State 3
+
+    4 A: • VAR ASSIGN A
+    5  | • M
+    6 M: • T
+    7  | • M PLUS T
+    8  | • M MINUS T
+    9  | • M LBRACK M RBRACK
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+   17  | LB • A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 2
+    LB      shift, and go to state 3
+
+    A  go to state 12
+    M  go to state 7
+    T  go to state 8
+    P  go to state 9
+    F  go to state 10
+
+
+State 4
+
+    0 $accept: S • $end
+
+    $end  shift, and go to state 13
+
+
+State 5
+
+    1 S: L •
+
+    $default  reduce using rule 1 (S)
+
+
+State 6
+
+    3 L: A • SEMICOLON L
+
+    SEMICOLON  shift, and go to state 14
+
+
+State 7
+
+    5 A: M •  [SEMICOLON, RB]
+    7 M: M • PLUS T
+    8  | M • MINUS T
+    9  | M • LBRACK M RBRACK
+
+    PLUS    shift, and go to state 15
+    MINUS   shift, and go to state 16
+    LBRACK  shift, and go to state 17
+
+    $default  reduce using rule 5 (A)
+
+
+State 8
+
+    6 M: T •  [PLUS, MINUS, SEMICOLON, RB, LBRACK, RBRACK]
+   11 T: T • MULT P
+   12  | T • DIV P
+
+    MULT  shift, and go to state 18
+    DIV   shift, and go to state 19
+
+    $default  reduce using rule 6 (M)
+
+
+State 9
+
+   10 T: P •
+
+    $default  reduce using rule 10 (T)
+
+
+State 10
+
+   13 P: F •  [PLUS, MINUS, MULT, DIV, SEMICOLON, RB, LBRACK, RBRACK]
+   14  | F • EXPON P
+
+    EXPON  shift, and go to state 20
+
+    $default  reduce using rule 13 (P)
+
+
+State 11
+
+    4 A: • VAR ASSIGN A
+    4  | VAR ASSIGN • A
+    5  | • M
+    6 M: • T
+    7  | • M PLUS T
+    8  | • M MINUS T
+    9  | • M LBRACK M RBRACK
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 2
+    LB      shift, and go to state 3
+
+    A  go to state 21
+    M  go to state 7
+    T  go to state 8
+    P  go to state 9
+    F  go to state 10
+
+
+State 12
+
+   17 F: LB A • RB
+
+    RB  shift, and go to state 22
+
+
+State 13
+
+    0 $accept: S $end •
+
+    $default  accept
+
+
+State 14
+
+    2 L: ε •  [$end]
+    3  | • A SEMICOLON L
+    3  | A SEMICOLON • L
+    4 A: • VAR ASSIGN A
+    5  | • M
+    6 M: • T
+    7  | • M PLUS T
+    8  | • M MINUS T
+    9  | • M LBRACK M RBRACK
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 2
+    LB      shift, and go to state 3
+
+    $default  reduce using rule 2 (L)
+
+    L  go to state 23
+    A  go to state 6
+    M  go to state 7
+    T  go to state 8
+    P  go to state 9
+    F  go to state 10
+
+
+State 15
+
+    7 M: M PLUS • T
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    T  go to state 25
+    P  go to state 9
+    F  go to state 10
+
+
+State 16
+
+    8 M: M MINUS • T
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    T  go to state 26
+    P  go to state 9
+    F  go to state 10
+
+
+State 17
+
+    6 M: • T
+    7  | • M PLUS T
+    8  | • M MINUS T
+    9  | • M LBRACK M RBRACK
+    9  | M LBRACK • M RBRACK
+   10 T: • P
+   11  | • T MULT P
+   12  | • T DIV P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    M  go to state 27
+    T  go to state 8
+    P  go to state 9
+    F  go to state 10
+
+
+State 18
+
+   11 T: T MULT • P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    P  go to state 28
+    F  go to state 10
+
+
+State 19
+
+   12 T: T DIV • P
+   13 P: • F
+   14  | • F EXPON P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    P  go to state 29
+    F  go to state 10
+
+
+State 20
+
+   13 P: • F
+   14  | • F EXPON P
+   14  | F EXPON • P
+   15 F: • ENTIER
+   16  | • VAR
+   17  | • LB A RB
+
+    ENTIER  shift, and go to state 1
+    VAR     shift, and go to state 24
+    LB      shift, and go to state 3
+
+    P  go to state 30
+    F  go to state 10
+
+
+State 21
+
+    4 A: VAR ASSIGN A •
+
+    $default  reduce using rule 4 (A)
+
+
+State 22
+
+   17 F: LB A RB •
+
+    $default  reduce using rule 17 (F)
+
+
+State 23
+
+    3 L: A SEMICOLON L •
+
+    $default  reduce using rule 3 (L)
+
+
+State 24
+
+   16 F: VAR •
+
+    $default  reduce using rule 16 (F)
+
+
+State 25
+
+    7 M: M PLUS T •  [PLUS, MINUS, SEMICOLON, RB, LBRACK, RBRACK]
+   11 T: T • MULT P
+   12  | T • DIV P
+
+    MULT  shift, and go to state 18
+    DIV   shift, and go to state 19
+
+    $default  reduce using rule 7 (M)
+
+
+State 26
+
+    8 M: M MINUS T •  [PLUS, MINUS, SEMICOLON, RB, LBRACK, RBRACK]
+   11 T: T • MULT P
+   12  | T • DIV P
+
+    MULT  shift, and go to state 18
+    DIV   shift, and go to state 19
+
+    $default  reduce using rule 8 (M)
+
+
+State 27
+
+    7 M: M • PLUS T
+    8  | M • MINUS T
+    9  | M • LBRACK M RBRACK
+    9  | M LBRACK M • RBRACK
+
+    PLUS    shift, and go to state 15
+    MINUS   shift, and go to state 16
+    LBRACK  shift, and go to state 17
+    RBRACK  shift, and go to state 31
+
+
+State 28
+
+   11 T: T MULT P •
+
+    $default  reduce using rule 11 (T)
+
+
+State 29
+
+   12 T: T DIV P •
+
+    $default  reduce using rule 12 (T)
+
+
+State 30
+
+   14 P: F EXPON P •
+
+    $default  reduce using rule 14 (P)
+
+
+State 31
+
+    9 M: M LBRACK M RBRACK •
+
+    $default  reduce using rule 9 (M)

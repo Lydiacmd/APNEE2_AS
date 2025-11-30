@@ -1,0 +1,14 @@
+expr.lex / expr.y
+→ mini-analyseur d’expressions pour t’entraîner à Flex + Bison.
+
+assign1.lex / assign1.y
+→ première version du langage des assignations (sans l’opérateur [ ] spécial).
+
+assign2.lex / assign2.y
+→ version finale avec tout le langage, y compris 5*x[3], 5+3[4], etc.
+
+uthash.h, table_symboles.c, table_symboles.h
+→ tout ce qu’il faut pour gérer la table de symboles (tu utilises les fonctions, tu ne réécris pas la table de hash).
+
+Makefile
+→ make expr, make assign1, make assign2, etc.
